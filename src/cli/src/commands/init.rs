@@ -1,9 +1,11 @@
 use super::CommandTrait;
 use crate::parser::Argument;
 use async_trait::async_trait;
+use requestty::{prompt_one, Question};
+use shared::node_type::NodeType;
 use std::collections::HashMap;
+use strum::IntoEnumIterator;
 
-// Init-specific arguments and configuration
 pub struct Init {}
 
 #[derive(Debug)]
@@ -22,7 +24,13 @@ impl CommandTrait for Init {
 
         let node_type = config.args.last().unwrap();
 
-        println!("{node_type}");
+        let node_type = prompt_one(
+            Question::select("node_type")
+                .message(" What type of node would you like to setup?")
+                .choices(NodeType::iter().map(|node_type| node_type.to_string()))
+                .build(),
+        )
+        .unwrap();
 
         Ok(())
     }

@@ -4,6 +4,7 @@ use async_trait::async_trait;
 use requestty::{prompt_one, Question};
 use shared::node_type::NodeType;
 use std::collections::HashMap;
+use std::str::FromStr;
 use strum::IntoEnumIterator;
 
 pub struct Init {}
@@ -20,17 +21,23 @@ impl CommandTrait for Init {
     type ConfigType = InitConfig;
 
     async fn execute(&self, config: Self::ConfigType) -> Result<(), String> {
-        let infralink_directory = dirs::home_dir().unwrap().join(".infralink");
+        // let infralink_directory = dirs::home_dir().unwrap().join(".infralink");
 
-        let node_type = config.args.last().unwrap();
-
-        let node_type = prompt_one(
+        let node_type_input = prompt_one(
             Question::select("node_type")
                 .message(" What type of node would you like to setup?")
                 .choices(NodeType::iter().map(|node_type| node_type.to_string()))
                 .build(),
         )
         .unwrap();
+
+        let node_type = NodeType::from_str(&node_type_input.as_list_item().unwrap().text).unwrap();
+
+        match node_type {
+            NodeType::Master => {}
+            NodeType::Worker => {}
+            NodeType::LoadBalancer => {}
+        }
 
         Ok(())
     }

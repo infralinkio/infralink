@@ -1,2 +1,4 @@
 /target
 .DS_Store
+.env
+/src/shared/src/prisma.rs

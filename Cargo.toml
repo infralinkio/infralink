@@ -1,2 +1,15 @@
 [workspace]
-members = ["src/cli", "src/master", "src/shared"]
+resolver = "2"
+members = ["src/cli", "src/master", "src/shared", "src/prisma", "src/api"]
+
+
+[workspace.dependencies]
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.2", features = [
+    "sqlite",
+    "migrations",
+] }
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.2", features = [
+    "sqlite",
+    "migrations",
+] }
+tokio = { version = "1.21.2", features = ["full"] }

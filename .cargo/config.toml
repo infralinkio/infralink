@@ -1,2 +1,5 @@
 [alias]
 prisma = "run --bin prisma --"
+master = "watch -x '--bin master run'"
+api = "run --bin api --"
+worker = "watch -x 'run --bin worker'"

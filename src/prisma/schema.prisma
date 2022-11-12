@@ -5,12 +5,32 @@ datasource db {
 
 generator client {
     // Corresponds to the cargo alias created earlier
-    provider      = "cargo prisma"
+    provider = "cargo prisma"
     // The location to generate the client. Is relative to the position of the schema
-    output        = "../shared/src/prisma.rs"
+    output   = "../shared/src/prisma.rs"
 }
 
-model User {
-    id          String  @id
-    displayName String
+model Node {
+    id String @id @default(cuid())
+
+    name   String
+    host   String
+    port   Int
+    config Config @relation(fields: [configId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+    configId  String
+}
+
+model Config {
+    id String @id @default(cuid())
+
+    ram  Int
+    cpu  Int
+    disk Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+    Node      Node[]
 }
